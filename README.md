@@ -1,5 +1,6 @@
 # 🚀 DevOps & Infrastructure as Code (IaC) Hands-On Lab
 
+[![Created](https://img.shields.io/badge/Created-February_2026-orange?style=for-the-badge&logo=calendar)](#-project-timeline)
 [![Terraform](https://img.shields.io/badge/Terraform-1.5+-844FBA?style=for-the-badge&logo=terraform&logoColor=white)](https://www.terraform.io/)
 [![Ansible](https://img.shields.io/badge/Ansible-2.15+-EE0000?style=for-the-badge&logo=ansible&logoColor=white)](https://www.ansible.com/)
 [![AWS](https://img.shields.io/badge/AWS-Cloud-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
@@ -14,6 +15,7 @@ A comprehensive, production-grade DevOps repository showcasing hands-on experien
 ## 📌 Table of Contents
 
 - [Overview](#-overview)
+- [Project Timeline](#-project-timeline)
 - [Repository Architecture](#-repository-architecture)
 - [Terraform Deep-Dive](#-terraform-deep-dive)
   - [Day 1-2: Basic EC2 Provisioning](#day-1-2-basic-ec2-provisioning)
@@ -41,6 +43,22 @@ This project serves as a step-by-step reference implementation for modern cloud 
 4. **Provisioners & Application Bootstrapping**: Deploying live web applications (Flask microservices) onto provisioned EC2 nodes automatically via SSH connection provisioners.
 5. **Zero-Trust Security & Dynamic Secrets**: Integrating HashiCorp Vault AppRole authentication to dynamically fetch secrets at apply-time rather than storing them in plain text.
 6. **Ansible Configuration Management**: Writing idempotent playbooks equipped with error handling (`ignore_errors`), system package verification (`openssh`, `openssl`), and conditional container execution (`docker`).
+
+---
+
+## 📅 Project Timeline
+
+This DevOps repository was created and developed according to the following timeline:
+
+| Phase / Module | Start Date | Completion Date | Scope & Key Deliverables |
+| :--- | :--- | :--- | :--- |
+| **Ansible Automation Lab** | Feb 21, 2026 | Feb 22, 2026 | Error handling playbooks, package updates (`openssh`, `openssl`), and conditional Docker installation. |
+| **Terraform Core & Modules** | Feb 22, 2026 | Feb 22, 2026 | Initial AWS EC2 resource declaration and modularization (`modules/ec2_instance`). |
+| **Terraform Remote Backend** | Feb 24, 2026 | Feb 24, 2026 | S3 backend integration for state locking (`day_4`). |
+| **VPC & Flask App Deployment** | Feb 24, 2026 | Feb 24, 2026 | Custom VPC, Subnet, IGW, Route Table, Security Group, and SSH provisioned Flask web application (`day_5`). |
+| **Workspaces & HashiCorp Vault** | Feb 25, 2026 | Feb 25, 2026 | Dynamic workspace sizing (`dev`, `stage`, `prod`) & HashiCorp Vault AppRole secrets management (`day_6` & `day_7`). |
+| **Verification & Screenshots** | Mar 14, 2026 | Mar 16, 2026 | End-to-end testing, architectural verification, and output capture. |
+| **Security Audit & GitHub Release** | Sep 17, 2026 | Sep 17, 2026 | Credential sanitization, `.gitignore` setup, placeholder refactoring, and documentation release. |
 
 ---
 
