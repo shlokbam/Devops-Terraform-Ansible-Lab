@@ -1,0 +1,28 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor / IDE settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# SSH / Private key files
+*.pem
+*.key
+*.pub
+shlok-terraform.pem
+
+# Terraform files
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate.d/
+
+# Secrets & Environment variables
+*.env
+.env.*
+secrets.tfvars
