@@ -1,226 +1,59 @@
-# 🚀 DevOps & Infrastructure as Code (IaC) Hands-On Lab
+<div align="center">
 
-[![Created](https://img.shields.io/badge/Created-February_2026-orange?style=for-the-badge&logo=calendar)](#-project-timeline)
-[![Terraform](https://img.shields.io/badge/Terraform-1.5+-844FBA?style=for-the-badge&logo=terraform&logoColor=white)](https://www.terraform.io/)
-[![Ansible](https://img.shields.io/badge/Ansible-2.15+-EE0000?style=for-the-badge&logo=ansible&logoColor=white)](https://www.ansible.com/)
-[![AWS](https://img.shields.io/badge/AWS-Cloud-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
-[![Vault](https://img.shields.io/badge/HashiCorp_Vault-Secrets_Mgmt-00C48C?style=for-the-badge&logo=vault&logoColor=white)](https://www.vaultproject.io/)
-[![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
+<img src=".github/assets/banner.svg" alt="DevOps lab: seven days of real infrastructure" width="100%">
 
-A comprehensive, production-grade DevOps repository showcasing hands-on experience with **Infrastructure as Code (IaC)** using **Terraform**, **Configuration Management & Automation** using **Ansible**, custom **VPC Network Architecture**, multi-environment infrastructure isolation (**Terraform Workspaces**), automated web application deployment, and **Enterprise Secrets Management** via **HashiCorp Vault**.
+<img src="https://img.shields.io/badge/iac-Terraform-FF5A1F?style=flat-square&labelColor=2A2926" alt="iac: Terraform">
+<img src="https://img.shields.io/badge/config-Ansible-F2EFE7?style=flat-square&labelColor=2A2926" alt="config: Ansible">
+<img src="https://img.shields.io/badge/cloud-AWS-F2EFE7?style=flat-square&labelColor=2A2926" alt="cloud: AWS">
+<img src="https://img.shields.io/badge/secrets-HashiCorp%20Vault-F2EFE7?style=flat-square&labelColor=2A2926" alt="secrets: HashiCorp Vault">
 
----
+<a href="#what-it-does">What it does</a> · <a href="#stack">Stack</a> · <a href="#run-it">Run it</a> · <a href="https://journal-murex-three.vercel.app/journal/my-7-day-devops-lab-terraform-ansible-hashicorp-vault">Write-up</a>
 
-## 📌 Table of Contents
+</div>
 
-- [Overview](#-overview)
-- [Project Timeline](#-project-timeline)
-- [Repository Architecture](#-repository-architecture)
-- [Terraform Deep-Dive](#-terraform-deep-dive)
-  - [Day 1-2: Basic EC2 Provisioning](#day-1-2-basic-ec2-provisioning)
-  - [Day 3: Modularization \& Reusable Modules](#day-3-modularization--reusable-modules)
-  - [Day 4: Remote State Management \& S3 Backend](#day-4-remote-state-management--s3-backend)
-  - [Day 5: Custom VPC Network \& Automated Flask Deployment](#day-5-custom-vpc-network--automated-flask-deployment)
-  - [Day 6: Terraform Workspaces \& Multi-Environment Configuration](#day-6-terraform-workspaces--multi-environment-configuration)
-  - [Day 7: HashiCorp Vault Integration for Dynamic Secrets](#day-7-hashicorp-vault-integration-for-dynamic-secrets)
-- [Ansible Automation](#-ansible-automation)
-  - [Error Handling \& Docker Provisioning Playbook](#error-handling--docker-provisioning-playbook)
-- [Project Screenshots \& Verification](#-project-screenshots--verification)
-- [Security Audits \& Safe GitHub Publishing](#-security-audits--safe-github-publishing)
-- [Getting Started](#-getting-started)
-- [License](#-license)
+A day-by-day lab that goes from one EC2 instance to a custom VPC, remote state, multi-environment workspaces and Vault-managed secrets, plus an Ansible playbook. Written up on my journal: [My 7-Day DevOps Lab](https://journal-murex-three.vercel.app/journal/my-7-day-devops-lab-terraform-ansible-hashicorp-vault).
 
----
+## What it does
 
-## 🔍 Overview
+| Folder | What I built |
+| :--- | :--- |
+| [`Terraform/main.tf`](Terraform/main.tf) | Day 1–2: a `t2.micro` Ubuntu EC2 instance |
+| [`Terraform/day_3/`](Terraform/day_3) | A reusable EC2 module with inputs and outputs |
+| [`Terraform/day_4/`](Terraform/day_4) | Remote state in an S3 backend |
+| [`Terraform/day_5/`](Terraform/day_5) | A custom VPC, subnet, internet gateway, routes and security group, then SSH provisioners that deploy a Flask app |
+| [`Terraform/day_6/`](Terraform/day_6) | Workspaces that pick the instance size per environment: dev `t2.micro`, stage `t2.medium`, prod `t2.xlarge` |
+| [`Terraform/day_7/`](Terraform/day_7) | HashiCorp Vault with AppRole auth, reading a KV secret at plan time |
+| [`Ansible/error_handling/`](Ansible/error_handling) | A playbook that upgrades OpenSSH/OpenSSL and installs Docker only when it's missing |
 
-This project serves as a step-by-step reference implementation for modern cloud engineering and DevOps workflows:
+Screenshots of the plans, the AWS console and the running app are in [`Devops project ss/`](Devops%20project%20ss).
 
-1. **Declarative Cloud Provisioning**: Automating AWS EC2, Security Groups, VPCs, Subnets, and Gateways using Terraform modules.
-2. **State & Remote Backend**: Locking state and configuring S3 remote backends to prevent concurrent drift and enable team collaboration.
-3. **Multi-Environment Orchestration**: Utilizing Terraform Workspaces (`dev`, `stage`, `prod`) to map dynamic compute capacities seamlessly.
-4. **Provisioners & Application Bootstrapping**: Deploying live web applications (Flask microservices) onto provisioned EC2 nodes automatically via SSH connection provisioners.
-5. **Zero-Trust Security & Dynamic Secrets**: Integrating HashiCorp Vault AppRole authentication to dynamically fetch secrets at apply-time rather than storing them in plain text.
-6. **Ansible Configuration Management**: Writing idempotent playbooks equipped with error handling (`ignore_errors`), system package verification (`openssh`, `openssl`), and conditional container execution (`docker`).
+## Stack
 
----
+| Area | Tools |
+| :--- | :--- |
+| Provisioning | Terraform ≥ 1.5, AWS (EC2, VPC, S3) |
+| Configuration | Ansible ≥ 2.15 |
+| Secrets | HashiCorp Vault (AppRole, KV) |
+| App | Python, Flask |
 
-## 📅 Project Timeline
+## Run it
 
-This DevOps repository was created and developed according to the following timeline:
+Needs the AWS CLI with credentials, Terraform and Ansible. Bucket names, key pairs and Vault IDs are placeholders: set your own before applying.
 
-| Phase / Module | Start Date | Completion Date | Scope & Key Deliverables |
-| :--- | :--- | :--- | :--- |
-| **Ansible Automation Lab** | Feb 21, 2026 | Feb 22, 2026 | Error handling playbooks, package updates (`openssh`, `openssl`), and conditional Docker installation. |
-| **Terraform Core & Modules** | Feb 22, 2026 | Feb 22, 2026 | Initial AWS EC2 resource declaration and modularization (`modules/ec2_instance`). |
-| **Terraform Remote Backend** | Feb 24, 2026 | Feb 24, 2026 | S3 backend integration for state locking (`day_4`). |
-| **VPC & Flask App Deployment** | Feb 24, 2026 | Feb 24, 2026 | Custom VPC, Subnet, IGW, Route Table, Security Group, and SSH provisioned Flask web application (`day_5`). |
-| **Workspaces & HashiCorp Vault** | Feb 25, 2026 | Feb 25, 2026 | Dynamic workspace sizing (`dev`, `stage`, `prod`) & HashiCorp Vault AppRole secrets management (`day_6` & `day_7`). |
-| **Verification & Screenshots** | Mar 14, 2026 | Mar 16, 2026 | End-to-end testing, architectural verification, and output capture. |
-| **Security Audit & GitHub Release** | Sep 17, 2026 | Sep 17, 2026 | Credential sanitization, `.gitignore` setup, placeholder refactoring, and documentation release. |
+```bash
+cd Terraform/day_5
+terraform init && terraform plan
+terraform apply -auto-approve
 
----
-
-## 🏗️ Repository Architecture
-
-```directory
-Devops/
-├── Ansible/
-│   └── error_handling/
-│       ├── main.yaml              # Ansible playbook for package maintenance & Docker install
-│       └── inventory.ini          # Target host inventory configuration
-├── Terraform/
-│   ├── main.tf                    # Root starter configuration for basic EC2
-│   ├── day_3/                     # Modularization Lab
-│   │   ├── main.tf                # Module consumer declaration
-│   │   └── modules/
-│   │       └── ec2_instance/      # Reusable EC2 module (main.tf, variables.tf, output.tf)
-│   ├── day_4/                     # Remote Backend Lab
-│   │   ├── main.tf                # S3 Bucket & EC2 Instance resource definitions
-│   │   └── backend.tf             # Terraform S3 backend state locking setup
-│   ├── day_5/                     # Custom VPC & Flask Deployment Lab
-│   │   ├── main.tf                # Custom VPC, Subnet, IGW, Route Table, Security Group & EC2
-│   │   └── app.py                 # Lightweight Flask web app deployed automatically
-│   ├── day_6/                     # Workspaces Lab
-│   │   ├── main.tf                # Workspace lookup for dynamic sizing (dev, stage, prod)
-│   │   ├── terraform.tfvars       # Environment variable definitions
-│   │   └── modules/
-│   │       └── ec2_instance/      # EC2 module implementation
-│   └── day_7/                     # HashiCorp Vault Secrets Lab
-│       └── main.tf                # Vault provider, AppRole authentication & KV secret lookup
-├── Devops project ss/             # Architecture verification screenshots & output logs
-├── .gitignore                     # Git exclusion rules for secrets, PEM keys & state files
-└── README.md                      # Comprehensive repository documentation
+ansible-playbook -i Ansible/error_handling/inventory.ini Ansible/error_handling/main.yaml
 ```
 
 ---
 
-## 🛠️ Terraform Deep-Dive
+<div align="center">
 
-### Day 1-2: Basic EC2 Provisioning
-- **Location**: [`Terraform/main.tf`](file:///Users/shlokbam/Desktop/Devops/Terraform/main.tf)
-- Basic AWS provider setup initializing an EC2 instance (`t2.micro`) using Ubuntu AMI in `us-east-1`.
+<a href="https://shlokbam.in"><img src=".github/assets/footer.svg" alt="Built by Shlok Bam" width="100%"></a>
 
-### Day 3: Modularization & Reusable Modules
-- **Location**: [`Terraform/day_3/`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_3/main.tf)
-- Created a modular architecture separating resource logic (`modules/ec2_instance`) from parameter inputs (`ami_value`, `instance_type_value`).
-- Promotes code reuse and adherence to **DRY (Don't Repeat Yourself)** principles.
+<a href="https://shlokbam.in">shlokbam.in</a> · <a href="https://www.linkedin.com/in/shlokbam/">LinkedIn</a> · <a href="https://github.com/shlokbam">More projects</a>
 
-### Day 4: Remote State Management & S3 Backend
-- **Location**: [`Terraform/day_4/`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_4/backend.tf)
-- Configured a remote S3 backend (`<YOUR_S3_BUCKET_NAME>`) for storing `terraform.tfstate`.
-- Solves local state lock collisions and facilitates secure collaboration across team members.
-
-### Day 5: Custom VPC Network & Automated Flask Deployment
-- **Location**: [`Terraform/day_5/`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_5/main.tf)
-- **Networking Stack**: Custom VPC (`10.0.0.0/16`), Public Subnet (`10.0.1.0/24`), Internet Gateway (IGW), Route Table association (`0.0.0.0/0`), and custom Security Group (ports 22, 80, 5000).
-- **Automated Bootstrapping**: Uses Terraform SSH provisioners to copy [`app.py`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_5/app.py), set up a Python virtual environment, install Flask, and launch a background web server running on port 80.
-
-### Day 6: Terraform Workspaces & Multi-Environment Configuration
-- **Location**: [`Terraform/day_6/`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_6/main.tf)
-- Demonstrates dynamic instance scaling based on active Terraform workspace (`dev`, `stage`, `prod`):
-  ```hcl
-  instance_type = lookup(var.instance_type, terraform.workspace, "t2.micro")
-  ```
-  - `dev` $\rightarrow$ `t2.micro`
-  - `stage` $\rightarrow$ `t2.medium`
-  - `prod` $\rightarrow$ `t2.xlarge`
-
-### Day 7: HashiCorp Vault Integration for Dynamic Secrets
-- **Location**: [`Terraform/day_7/`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_7/main.tf)
-- Integrates the **HashiCorp Vault Provider** using **AppRole Authentication**.
-- Dynamically queries Vault KV secrets engine (`test-secret`) at runtime to tag AWS resources securely without hardcoding credentials in repository files.
-
----
-
-## ⚙️ Ansible Automation
-
-### Error Handling & Docker Provisioning Playbook
-- **Location**: [`Ansible/error_handling/main.yaml`](file:///Users/shlokbam/Desktop/Devops/Ansible/error_handling/main.yaml)
-- **Key Features**:
-  - **Package Upgrade**: Ensures critical security packages (`openssh`, `openssl`) are upgraded using Ansible's `apt` module with fault tolerance (`ignore_errors: yes`).
-  - **Condition Enforcement**: Checks Docker installation state via command execution (`docker --version`).
-  - **Automated Installation**: Installs `docker.io` automatically if the command check fails (`when: output.failed`).
-
----
-
-## 🖼️ Project Screenshots & Verification
-
-The [`Devops project ss/`](file:///Users/shlokbam/Desktop/Devops/Devops%20project%20ss) directory contains architectural diagrams and deployment verifications:
-
-- **Infrastructure Provisioning Logs**: Terraform plan and apply execution outputs.
-- **VPC & EC2 Validation**: AWS Console verification of subnets, route tables, and security groups.
-- **Flask Web Server Response**: Live web browser response (`Server is working 🚀`).
-
----
-
-## 🔐 Security Best Practices & Placeholder Guide
-
-> [!IMPORTANT]
-> **SECURITY & GITHUB PUBLISHING AUDIT**
-> 
-> To prevent leaking sensitive credentials, private keys, or infrastructure IP addresses on GitHub, all sensitive values across this repository have been sanitized and replaced with standardized **`<YOUR_...>`** placeholders. 
-> 
-> Before executing any Terraform code locally or in CI/CD pipelines, ensure you replace these placeholders with your actual environment configuration.
-
-### 📋 Placeholder Reference & Environment Setup
-
-| Component | File Path | Sanitized Placeholder | Description & Action Required |
-| :--- | :--- | :--- | :--- |
-| **Vault Server** | [`Terraform/day_7/main.tf`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_7/main.tf) | `<YOUR_VAULT_SERVER_IP>` | Replace with your HashiCorp Vault server IP / domain URL. |
-| **Vault AppRole** | [`Terraform/day_7/main.tf`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_7/main.tf) | `<YOUR_VAULT_ROLE_ID>` | Replace with your Vault AppRole Role ID. |
-| **Vault Secret** | [`Terraform/day_7/main.tf`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_7/main.tf) | `<YOUR_VAULT_SECRET_ID>` | Replace with your Vault AppRole Secret ID (or set via `VAULT_SECRET_ID` env var). |
-| **AWS Key Pair** | [`Terraform/day_5/main.tf`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_5/main.tf) | `<YOUR_KEY_PAIR_NAME>` | Replace with the name of your registered AWS EC2 Key Pair. |
-| **SSH Private Key** | [`Terraform/day_5/shlok-terraform.pem`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_5/shlok-terraform.pem) | `<YOUR_PRIVATE_KEY_CONTENT_HERE>` | Replaced with placeholder. Replace with your actual RSA private key. |
-| **S3 Remote Bucket** | [`Terraform/day_4/main.tf`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_4/main.tf) & [`backend.tf`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_4/backend.tf) | `<YOUR_S3_BUCKET_NAME>` | Replace with your globally unique AWS S3 bucket name. |
-| **S3 Key Path** | [`Terraform/day_4/backend.tf`](file:///Users/shlokbam/Desktop/Devops/Terraform/day_4/backend.tf) | `<YOUR_KEY_PATH>` | Replace with your designated state storage path prefix. |
-
-### 🛡️ Repository Git Hygiene (`.gitignore`)
-
-The following sensitive and auto-generated files are strictly excluded from version control via [`.gitignore`](file:///Users/shlokbam/Desktop/Devops/.gitignore):
-- **Private SSH Keys** (`*.pem`, `*.key`) — Prevents exposing SSH credentials.
-- **Terraform State Files** (`*.tfstate`, `*.tfstate.backup`, `terraform.tfstate.d/`) — Prevents committing unencrypted IP addresses, resource IDs, and secrets.
-- **Terraform Cache** (`.terraform/`, `.terraform.lock.hcl`) — Excludes local provider binaries.
-- **OS & IDE Metadata** (`.DS_Store`, `.vscode/`) — Keeps the repository clean and platform-agnostic.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- [AWS CLI](https://aws.amazon.com/cli/) configured with proper IAM credentials (`aws configure`)
-- [Terraform CLI](https://developer.hashicorp.com/terraform/downloads) ($\ge v1.5.0$)
-- [Ansible Core](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) ($\ge v2.15$)
-- [Python 3.x](https://www.python.org/downloads/)
-
-### Running Terraform Labs
-1. Navigate to the desired lab directory (e.g., Day 5):
-   ```bash
-   cd Terraform/day_5
-   ```
-2. Initialize Terraform modules & backend:
-   ```bash
-   terraform init
-   ```
-3. Preview planned changes:
-   ```bash
-   terraform plan
-   ```
-4. Apply the infrastructure:
-   ```bash
-   terraform apply -auto-approve
-   ```
-
-### Running Ansible Playbooks
-1. Update target IPs in `Ansible/error_handling/inventory.ini`.
-2. Execute the playbook:
-   ```bash
-   ansible-playbook -i Ansible/error_handling/inventory.ini Ansible/error_handling/main.yaml
-   ```
-
----
-
-## 📄 License
-
-This repository is distributed under the **MIT License**. Feel free to use, modify, and distribute for educational and commercial purposes.
+</div>
